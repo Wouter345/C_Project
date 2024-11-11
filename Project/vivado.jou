@@ -1,0 +1,28 @@
+#-----------------------------------------------------------
+# Vivado v2023.1 (64-bit)
+# SW Build 3865809 on Sun May  7 15:05:29 MDT 2023
+# IP Build 3864474 on Sun May  7 20:36:21 MDT 2023
+# SharedData Build 3865790 on Sun May 07 13:33:03 MDT 2023
+# Start of session at: Mon Nov 11 03:40:48 2024
+# Process ID: 23036
+# Current directory: C:/Users/woute/OneDrive/Documenten/TEST/Project
+# Command line: vivado.exe project_hw/project_hw.xpr -tempDir tmp
+# Log file: C:/Users/woute/OneDrive/Documenten/TEST/Project/vivado.log
+# Journal file: C:/Users/woute/OneDrive/Documenten/TEST/Project\vivado.jou
+# Running On: wouter-laptop, OS: Windows, CPU Frequency: 2304 MHz, CPU Physical cores: 20, Host memory: 34049 MB
+#-----------------------------------------------------------
+start_gui
+open_project project_hw/project_hw.xpr
+set_property IS_GLOBAL_INCLUDE 1 [get_files -all C:/Users/woute/OneDrive/Documenten/TEST/Project/src/rtl_building_blocks/device/register.sv]
+set_property -name {xsim.simulate.runtime} -value {} -objects [get_filesets sim_1]
+launch_simulation
+source tbench_top.tcl
+relaunch_sim
+set_property -name {xsim.simulate.runtime} -value {2ms} -objects [get_filesets sim_1]
+close_sim
+launch_simulation
+source tbench_top.tcl
+create_wave_config; add_wave /; set_property needs_save false [current_wave_config]
+run 2ms
+run 2000ns
+close_sim
