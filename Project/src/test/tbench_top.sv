@@ -1,4 +1,3 @@
-
 module tbench_top;
   //change this according to your critical path length.
   //The code will error* if it too short, but you will get no feedback if it is longer than necessary

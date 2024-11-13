@@ -73,15 +73,15 @@ class Driver #(
                   end else begin
                     intf_i.cb.a_input <= 0;  // zero padding for boundary cases
                   end
-                  @(intf_i.cb iff intf_i.cb.a_ready);
-                  intf_i.cb.a_valid <= 0;
+                  @(intf_i.cb iff intf_i.cb.a_ready); //if a ready goes high 
+                  intf_i.cb.a_valid <= 0; //--> set a_valid to low for next clock cycle
 
                   //drive a (one word from kernel)
-                  intf_i.cb.b_valid <= 1;
+                  intf_i.cb.b_valid <= 1; //and set b_valid high
                   assert (!$isunknown(tract_kernel.kernel[ky][kx][inch][outch]));
                   intf_i.cb.b_input <= tract_kernel.kernel[ky][kx][inch][outch];
-                  @(intf_i.cb iff intf_i.cb.b_ready);
-                  intf_i.cb.b_valid <= 0;
+                  @(intf_i.cb iff intf_i.cb.b_ready); //if b ready goes high
+                  intf_i.cb.b_valid <= 0; //set b_valid low
                 end
               end
             end

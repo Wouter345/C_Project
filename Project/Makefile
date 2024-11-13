@@ -13,6 +13,6 @@ open:
 	vivado project_hw/project_hw.xpr -tempDir tmp &
 
 clean:
-	del /f /q vivado.* vivado_* .Xil\* webtalk* NA
-	rmdir /s /q project_hw project_ipcores tmp .Xil
+	del /f /q vivado.* vivado_* .Xil\* webtalk* NA 2>nul
+	rmdir /s /q project_hw project_ipcores tmp .Xil 
 

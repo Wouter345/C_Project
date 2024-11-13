@@ -4,7 +4,7 @@ module memory #(
   //initial value overwritten by tbench_top
   parameter int WIDTH = 16,
   parameter int HEIGHT = 1,
-  parameter bit USED_AS_EXTERNAL_MEM = 1// for area, bandwidth and energy estimation
+  parameter bit USED_AS_EXTERNAL_MEM// for area, bandwidth and energy estimation
   )
   (
   input logic clk,

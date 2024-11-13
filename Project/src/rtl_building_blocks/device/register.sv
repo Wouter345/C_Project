@@ -21,9 +21,9 @@ always_ff @(posedge clk, negedge arst_n_in) begin
 end
 assign qout = r;
 
-`ifndef TARGET_SYNTHESIS
+`ifndef TARGET_SYNTHESIS     /////// ?? Does these registers not count towards energy ??
 //area logging
-initial begin
+initial begin 
   #0;
   tbench_top.area += 17*WIDTH;
   $display("%m added %d to area", 17*WIDTH);
