@@ -22,8 +22,8 @@ class Driver #(
     intf_i.cb.conv_stride_mode <= 0;
     intf_i.cb.a_valid <= 0;
     intf_i.cb.b_valid <= 0;
-    intf_i.cb.arst_n <= 0;
-    repeat (2) @(intf_i.cb);
+    intf_i.cb.arst_n <= 0; // set reset enable
+    repeat (2) @(intf_i.cb); // wait two consecutive clock edges on clocking block
     intf_i.cb.arst_n <= 1;  //synchronous release of reset
     repeat (2) @(intf_i.cb);
     $display("[DRV] -----  Reset Ended  -----");
@@ -33,15 +33,15 @@ class Driver #(
     // Get a transaction with kernel from the Generator
     // Kernel remains same throughput the verification
     Transaction_Kernel #(cfg) tract_kernel;
-    gen2drv_kernel.get(tract_kernel);
+    gen2drv_kernel.get(tract_kernel); //read tract_kernel from mailbox
 
     $display("[DRV] -----  Start execution -----");
 
     forever begin
       time starttime;
       // Get a transaction with feature from the Generator
-      Transaction_Feature #(cfg) tract_feature;
-      gen2drv_feature.get(tract_feature);
+      Transaction_Feature #(cfg) tract_feature; 
+      gen2drv_feature.get(tract_feature); //read tract_feature from mailbox
       $display("[DRV] Programming configuration bits");
       intf_i.cb.conv_kernel_mode <= (cfg.KERNEL_SIZE - 1) / 2;
       intf_i.cb.conv_stride_mode <= $clog2(cfg.CONV_STEP);
@@ -49,13 +49,13 @@ class Driver #(
       $display("[DRV] Giving start signal");
       intf_i.cb.start <= 1;
       starttime = $time();
-      @(intf_i.cb);
+      @(intf_i.cb); // wait 1 cycle i guess
       intf_i.cb.start <= 0;
 
       $display("[DRV] ----- Driving a new input feature map -----");
       for (int x = 0; x < cfg.FEATURE_MAP_WIDTH; x = x + cfg.CONV_STEP) begin
         $display("[DRV] %.2f %% of the input is transferred",
-                 ((x) * 100.0) / cfg.FEATURE_MAP_WIDTH);
+                 ((x) * 100.0) / cfg.FEATURE_MAP_WIDTH); // displays progress as percentage
         for (int y = 0; y < cfg.FEATURE_MAP_HEIGHT; y = y + cfg.CONV_STEP) begin
           for (int inch = 0; inch < cfg.INPUT_NB_CHANNELS; inch++) begin
             for (int outch = 0; outch < cfg.OUTPUT_NB_CHANNELS; outch++) begin

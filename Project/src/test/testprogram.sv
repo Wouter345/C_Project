@@ -4,7 +4,7 @@ program testprogram #(
     intf intf_i
 );
 
-  Environment #(cfg) env1 = new(intf_i);
+  Environment #(cfg) env1 = new(intf_i); //initialize and create new environment
 
   initial begin
     //$dumpfile("out/dump.vcd");

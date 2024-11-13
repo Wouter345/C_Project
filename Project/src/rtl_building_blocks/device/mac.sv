@@ -27,6 +27,7 @@ module mac #(
                        \ /          __\______
                         +          /1___0__SEL\ <-- accumulate_internal
                         |           |   \------------ <-- partial_sum_in
+                        |           |
                      ___|___________|----------> >> ---> out__
                     |  d            q  |
     input_valid --> |we       arst_n_in| <-- arst_n_in

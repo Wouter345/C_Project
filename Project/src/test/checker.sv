@@ -73,7 +73,6 @@ class Checker #(
           for (int outch = 0; outch < cfg.OUTPUT_NB_CHANNELS; outch++) begin
             // If x and y fall in the region of computation, then mark it not been tested
             if (x % cfg.CONV_STEP == 0 && y % cfg.CONV_STEP == 0) output_tested[x][y][outch] = 0;
-            // If x and y fall in the region of computation, then mark it not been tested
             else
               // If x and y do not fall in the region of computation, then mark it already been tested
               output_tested[x][y][outch] = 1;

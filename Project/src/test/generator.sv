@@ -3,8 +3,8 @@ class Generator #(
     config_t cfg
 );
 
-  mailbox #(Transaction_Feature #(cfg)) gen2drv_feature, gen2chk_feature;
-  mailbox #(Transaction_Kernel #(cfg))  gen2drv_kernel,  gen2chk_kernel;
+  mailbox #(Transaction_Feature #(cfg)) gen2drv_feature, gen2chk_feature; // feature communication to driver and checker
+  mailbox #(Transaction_Kernel #(cfg))  gen2drv_kernel,  gen2chk_kernel; // kernel communication to driver and checker
 
   // class constructor
   function new(mailbox#(Transaction_Feature#(cfg)) g2d_feature, g2c_feature,

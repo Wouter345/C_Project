@@ -1,4 +1,3 @@
-
 class Environment #(
     config_t cfg
 );
@@ -18,7 +17,8 @@ class Environment #(
   mailbox #(Transaction_Output_Word #(cfg)) mon2chk;
   mailbox #(bit) chk2scb;
 
-  // constructor
+  // constructor = function called when creating(constructing)
+  // constructs all other blocks in testbench
   function new(virtual intf #(cfg) i);
 
     intf_i          = i;
@@ -53,7 +53,7 @@ class Environment #(
   endtask
 
   task pre_test();
-    drv.reset();
+    drv.reset(); // reset driver
   endtask
 
   task test();

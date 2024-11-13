@@ -1,4 +1,3 @@
-
 typedef struct {
   int DATA_WIDTH         = 16;
   int ACCUMULATION_WIDTH = 32;

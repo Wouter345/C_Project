@@ -20,7 +20,7 @@ module tbench_top;
   localparam int KERNEL_SIZE = 3;
   localparam int CONV_STEP = 4;
 
-  // initialize config_t structure, which is used to parameterize all other classes of the testbench
+  // initialize config_t structure, which is used to parameterize all other classes of the testbench (common.sv)
   localparam config_t cfg = '{
       DATA_WIDTH,
       ACCUMULATION_WIDTH,
@@ -34,7 +34,7 @@ module tbench_top;
       CONV_STEP
   };
 
-  initial $timeformat(-9, 3, "ns", 1);
+  initial $timeformat(-9, 3, "ns", 1); //time unit -9=1ns; precision= #fractional digits for current timescale
 
   //clock
   bit clk;

@@ -13,7 +13,7 @@ interface intf #(
   logic [1:0] conv_kernel_mode;
   logic [1:0] conv_stride_mode;
   logic [cfg.DATA_WIDTH - 1 : 0] a_input;
-  logic a_valid;
+  logic a_valid; //handshake procedure
   logic a_ready;
 
   logic [cfg.DATA_WIDTH - 1 : 0] b_input;
@@ -23,15 +23,15 @@ interface intf #(
   // output interface
   logic signed [cfg.DATA_WIDTH-1:0] output_data;
   logic output_valid;
-  logic [$clog2(cfg.FEATURE_MAP_WIDTH)-1:0] output_x;
-  logic [$clog2(cfg.FEATURE_MAP_HEIGHT)-1:0] output_y;
-  logic [$clog2(cfg.OUTPUT_NB_CHANNELS)-1:0] output_ch;
+  logic [$clog2(cfg.FEATURE_MAP_WIDTH)-1:0] output_x; //x-coordinate output
+  logic [$clog2(cfg.FEATURE_MAP_HEIGHT)-1:0] output_y; //y-coordinate output
+  logic [$clog2(cfg.OUTPUT_NB_CHANNELS)-1:0] output_ch; //channel select output
 
   logic start;
   logic running;
 
-  default clocking cb @(posedge clk);
-    default input #0.01 output #0.01;
+  default clocking cb @(posedge clk); // avoids race conditions
+    default input #0.01 output #0.01; //input comes from the DUT; output goes to DUT
 
     output conv_kernel_mode;
     output conv_stride_mode;
@@ -55,22 +55,23 @@ interface intf #(
     input running;
   endclocking
 
-  modport tb(clocking cb);  // testbench's view of the interface
+  modport tb(clocking cb); // defines directionality
+  // testbench's view of the interface
 
   //ENERGY ESTIMATION:
   always @(posedge clk) begin
     if (a_valid && a_ready) begin
-      tbench_top.energy += 1 * (cfg.DATA_WIDTH);
+      tbench_top.energy += 1 * (cfg.DATA_WIDTH); //read A is 1 energy per bit
     end
   end
   always @(posedge clk) begin
     if (b_valid && b_ready) begin
-      tbench_top.energy += 1 * (cfg.DATA_WIDTH);
+      tbench_top.energy += 1 * (cfg.DATA_WIDTH); // read B is 1 energy per bit
     end
   end
   always @(posedge clk) begin
-    if (output_valid && 1) begin  //no ready here, set to 1
-      tbench_top.energy += 1 * (cfg.DATA_WIDTH);
+    if (output_valid && 1) begin  //no ready here, set to 1 
+      tbench_top.energy += 1 * (cfg.DATA_WIDTH); // write OUT is 1 energy per bit
     end
   end
 

@@ -1,6 +1,7 @@
 //wraps both top_chip and an external memory
 //bandwidth to be counted is all bandwidth in and out of top_chip
 module top_system #(
+    // these initial values are overwritten by tbench_top
     parameter int IO_DATA_WIDTH = 16,
     parameter int ACCUMULATION_WIDTH = 32,
     parameter int EXT_MEM_HEIGHT = 1 << 20,
@@ -26,10 +27,10 @@ module top_system #(
     // 2: step = 4
 
     //system inputs and outputs
-    input logic [IO_DATA_WIDTH-1:0] a_input,
+    input logic [IO_DATA_WIDTH-1:0] a_input, // A is feature word
     input logic a_valid,
     output logic a_ready,
-    input logic [IO_DATA_WIDTH-1:0] b_input,
+    input logic [IO_DATA_WIDTH-1:0] b_input, // B is kernel word
     input logic b_valid,
     output logic b_ready,
 
@@ -44,15 +45,17 @@ module top_system #(
     input  logic start,
     output logic running
 );
-
+  
+  //read port
   logic unsigned [$clog2(EXT_MEM_HEIGHT)-1:0] ext_mem_read_addr;
   logic ext_mem_read_en;
-  logic [EXT_MEM_WIDTH-1:0] ext_mem_qout;
+  logic [EXT_MEM_WIDTH-1:0] ext_mem_qout; //read out
 
   //write port
   logic unsigned [$clog2(EXT_MEM_HEIGHT)-1:0] ext_mem_write_addr;
-  logic [EXT_MEM_WIDTH-1:0] ext_mem_din;
   logic ext_mem_write_en;
+  logic [EXT_MEM_WIDTH-1:0] ext_mem_din; //write in
+  
 
 
   //a simple pseudo-2 port memory (can read and write simultaneously)
@@ -88,8 +91,8 @@ module top_system #(
       .ext_mem_read_en(ext_mem_read_en),
       .ext_mem_qout(ext_mem_qout),
       .ext_mem_write_addr(ext_mem_write_addr),
-      .ext_mem_din(ext_mem_din),
       .ext_mem_write_en(ext_mem_write_en),
+      .ext_mem_din(ext_mem_din),
 
       .conv_kernel_mode(conv_kernel_mode),
       .conv_stride_mode(conv_stride_mode),

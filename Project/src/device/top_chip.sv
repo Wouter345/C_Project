@@ -1,4 +1,5 @@
 module top_chip #(
+    //initial values are overwritten by tbench_top
     parameter int IO_DATA_WIDTH = 16,
     parameter int ACCUMULATION_WIDTH = 32,
     parameter int EXT_MEM_HEIGHT = 1 << 20,
@@ -19,9 +20,9 @@ module top_chip #(
 
     //write port
     output logic unsigned [$clog2(EXT_MEM_HEIGHT)-1:0] ext_mem_write_addr,
-    output logic [EXT_MEM_WIDTH-1:0] ext_mem_din,
     output logic ext_mem_write_en,
-
+    output logic [EXT_MEM_WIDTH-1:0] ext_mem_din,
+    
     // System Run-time Configuration
     input logic [1:0] conv_kernel_mode,
     // Currently support 3 sizes:
@@ -58,12 +59,12 @@ module top_chip #(
   logic write_a;
   logic write_b;
 
-  `REG(IO_DATA_WIDTH, a);
+  `REG(IO_DATA_WIDTH, a); // Define 2 register with name 'a' and 'b' --> see register.sv MACRO instantiation ;;; a = qout for a , b = qout for b
   `REG(IO_DATA_WIDTH, b);
-  assign a_next = a_input;
-  assign b_next = b_input;
-  assign a_we   = write_a;
-  assign b_we   = write_b;
+  assign a_next = a_input; //a_next is name of din for register a
+  assign b_next = b_input; //b_next din for register b
+  assign a_we   = write_a; //a_we is write enable we for a
+  assign b_we   = write_b; //b_we is we for b
 
   logic mac_valid;
   logic mac_accumulate_internal;
