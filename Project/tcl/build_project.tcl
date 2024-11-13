@@ -2,20 +2,7 @@ set script_dir [file dirname [info script]]
 set origin_dir "$script_dir/.."
 
 
-create_project project_hw $origin_dir/project_hw -part xc7z020clg400-1
-set_property board_part tul.com.tw:pynq-z2:part0:1.0 [current_project]
-
-
-# Set IP repository paths
-set_property ip_repo_paths "[file normalize $origin_dir/project_ipcores] [file normalize $origin_dir/project_ipcores]" [get_filesets sources_1]
-
-# Rebuild user ip_repo's index before adding any source files
-update_ip_catalog
-
-
-
-
-
+create_project project_hw $origin_dir/project_hw 
 
 proc add_src_files {filename} {
   set fp [open $filename r]
@@ -54,6 +41,3 @@ set_property top tbench_top [get_filesets sources_1]
 set_property top tbench_top [get_filesets sim_1] 
 
 set_property source_mgmt_mode DisplayOnly [current_project]
-
-# update_compile_order -help
-# update_compile_order -fileset sim_1
