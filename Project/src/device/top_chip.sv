@@ -72,6 +72,8 @@ module top_chip #(
   logic [IO_DATA_WIDTH-1:0] KERNEL_out14;
   logic [IO_DATA_WIDTH-1:0] KERNEL_out15;
   
+
+  
   // Define REGs Feature_i (18 regs)
   logic Feature_we; //write enable for all REG Features at the same time
   `REG(IO_DATA_WIDTH, Feature_0); // qout used in super_mac
@@ -256,7 +258,8 @@ module top_chip #(
     endcase
   end
   
-  
+     logic mac_valid;
+     logic mac_accumulate_internal;
   
     // Define super_mac:= 16 mac units
     super_mac #(
@@ -313,7 +316,10 @@ module top_chip #(
   );
 
       
-  
+    logic unsigned[$clog2(128)-1:0] KERNEL_read_addr;
+    logic unsigned[$clog2(128)-1:0] KERNEL_write_addr;
+    logic KERNEL_re;
+    
     // Define KERNEL_SRAM := 16 SRAM units
     KERNEL_SRAM # (
         .WIDTH(IO_DATA_WIDTH),
@@ -321,9 +327,9 @@ module top_chip #(
         .USED_AS_EXTERNAL_MEMORY(0)
    )KERNEL_SRAM(
       .clk(clk),
-      .KERNEL_read_addr(),
-      .KERNEL_write_addr(),
-      .KERNEL_re(),
+      .KERNEL_read_addr(KERNEL_read_addr),
+      .KERNEL_write_addr(KERNEL_write_addr),
+      .KERNEL_re(KERNEL_re),
       
       .KERNEL_din_0(a_input),
       .KERNEL_din_1(b_input),

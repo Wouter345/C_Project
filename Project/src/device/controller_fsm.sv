@@ -11,45 +11,63 @@ module controller_fsm #(
     input  logic start,
     output logic running,
 
-    input logic [1:0] conv_kernel_mode,
-    // Currently support 3 sizes:
-    // 0: 1x1
-    // 1: 3x3
-    // 2: 5x5
     input logic [1:0] conv_stride_mode,
     // Currently support 3 modes:
     // 0: step = 1
     // 1: step = 2
     // 2: step = 4
 
-    //memory control interface
-    output logic mem_we,
-    output logic [LOG2_OF_MEM_HEIGHT-1:0] mem_write_addr,
-    output logic mem_re,
-    output logic [LOG2_OF_MEM_HEIGHT-1:0] mem_read_addr,
 
-    //datapad control interface & external handshaking communication of a and b
+
+    // interface 
     input  logic a_valid,
-    input  logic b_valid,
-    output logic b_ready,
     output logic a_ready,
-    output logic write_a,
-    output logic write_b,
-    output logic mac_valid,
-    output logic mac_accumulate_internal,
-    output logic mac_accumulate_with_0,
-
+    
+    // interface output control signals
     output logic output_valid,
     output logic [$clog2(FEATURE_MAP_WIDTH)-1:0] output_x,
     output logic [$clog2(FEATURE_MAP_HEIGHT)-1:0] output_y,
-    output logic [$clog2(OUTPUT_NB_CHANNELS)-1:0] output_ch
+    output logic [$clog2(OUTPUT_NB_CHANNELS)-1:0] output_ch,
+    
+    // WRITE ENABLES REGs
+    output logic Feature_we,
+    output logic Output_we,
+    
+    output logic Next_Feature_0_we,
+    output logic Next_Feature_1_we,
+    output logic Next_Feature_2_we,
+    output logic Next_Feature_3_we,
+    output logic Next_Feature_4_we,
+    output logic Next_Feature_5_we,
+    output logic Next_Feature_6_we,
+    output logic Next_Feature_7_we,
+    output logic Next_Feature_8_we,
+    output logic Next_Feature_9_we,
+    output logic Next_Feature_10_we,
+    output logic Next_Feature_11_we,
+    output logic Next_Feature_12_we,
+    output logic Next_Feature_13_we,
+    output logic Next_Feature_14_we,
+    output logic Next_Feature_15_we,
+    output logic Next_Feature_16_we,
+    output logic Next_Feature_17_we,
+    
+    // super_mac control signals
+    output logic mux18_select,
+    output logic mac_valid,
+    output logic mac_accumulate_internal,
+    
+    // KERNAL_SRAM control signals
+    output logic unsigned[$clog2(128)-1:0] KERNEL_read_addr,
+    output logic unsigned[$clog2(128)-1:0] KERNEL_write_addr,
+    output logic KERNEL_re
 
 );
 
   logic [2:0] conv_stride;
   assign conv_stride = 1 << conv_stride_mode; //1;2;4
   logic [2:0] conv_kernel;
-  assign conv_kernel = (conv_kernel_mode << 1) + 1; //1*1;3*3;5*5
+  assign conv_kernel =3;
 
   //loop counters (see register.sv for macro)
   `REG(32, k_v);    // THESE DO NOT NEED TO BE 32 BITS WIDE = very expensive area (17 per bit) total of 3264 area
@@ -86,11 +104,11 @@ module controller_fsm #(
   chosen loop order:
   for x
     for y
-      for ch_in
-        for ch_out     (with this order, accumulations need to be kept because ch_out is inside ch_in)
+        for ch_in 
           for k_v
             for k_h
-              body
+              for ch_out (in parallel)
+                body
   */
   // ==>
   
@@ -177,12 +195,11 @@ module controller_fsm #(
 
   always_comb begin
     //defaults: applicable if not overwritten below
-    write_a   = 0;
-    write_b   = 0;
+
     mac_valid = 0;
     running   = 1;
     a_ready   = 0;
-    b_ready   = 0;
+
 
     case (current_state)
       IDLE: begin
@@ -191,13 +208,11 @@ module controller_fsm #(
       end
       FETCH_A: begin
         a_ready = 1;
-        write_a = a_valid;
+
         next_state = a_valid ? FETCH_B : FETCH_A;
       end
       FETCH_B: begin
-        b_ready = 1;
-        write_b = b_valid;
-        next_state = b_valid ? MAC : FETCH_B;
+
       end
       MAC: begin
         mac_valid  = 1;
