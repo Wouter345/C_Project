@@ -4,19 +4,20 @@ module memory #(
   //initial value overwritten by tbench_top
   parameter int WIDTH = 16,
   parameter int HEIGHT = 1,
-  parameter bit USED_AS_EXTERNAL_MEM = 0// for area, bandwidth and energy estimation
+  parameter bit USED_AS_EXTERNAL_MEM// for area, bandwidth and energy estimation
   )
   (
   input logic clk,
 
   //read port (0 cycle: there is no clock edge between changing the read_addr and the output)
   input logic unsigned[$clog2(HEIGHT)-1:0] read_addr,
-  input logic unsigned[$clog2(HEIGHT)-1:0] write_addr,
   input logic read_en,
-  
-  input logic [WIDTH-1:0] din,
+  output logic[WIDTH-1:0] qout,
+
+  //write port (data is written on the rising clock edge)
+  input logic unsigned[$clog2(HEIGHT)-1:0] write_addr,
   input logic write_en,
-  output logic[WIDTH-1:0] qout
+  input logic [WIDTH-1:0] din
   );
 
 

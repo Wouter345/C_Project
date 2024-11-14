@@ -58,12 +58,15 @@ module tbench_top;
       .clk      (intf_i.clk),
       .arst_n_in(intf_i.arst_n),
 
+      .conv_kernel_mode(intf_i.conv_kernel_mode),
       .conv_stride_mode(intf_i.conv_stride_mode),
 
       .a_input(intf_i.a_input),
       .b_input(intf_i.b_input),
       .a_valid(intf_i.a_valid),
+      .b_valid(intf_i.b_valid),
       .a_ready(intf_i.a_ready),
+      .b_ready(intf_i.b_ready),
 
       .out         (intf_i.output_data),
       .output_valid(intf_i.output_valid),

@@ -2,10 +2,8 @@ src/rtl_building_blocks/device/adder.sv
 src/rtl_building_blocks/device/multiplier.sv
 src/rtl_building_blocks/device/register.sv
 src/rtl_building_blocks/device/memory.sv
-src/rtl_building_blocks/device/KERNEL_SRAM.sv
 src/rtl_building_blocks/device/fifo.sv
 src/rtl_building_blocks/device/mac.sv
-src/rtl_building_blocks/device/super_mac.sv
 src/rtl_building_blocks/device/adder_tree.sv
 src/device/controller_fsm.sv
 src/device/top_chip.sv
