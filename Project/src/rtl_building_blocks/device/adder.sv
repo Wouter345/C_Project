@@ -22,6 +22,7 @@ module adder #(
   logic signed [OUT_WIDTH-1:0] out_wo_delay;
   assign out_wo_delay = unscaled_out >>> OUT_SCALE;
 
+
   `ifndef TARGET_SYNTHESIS
   always @(out_wo_delay) begin
     // random delay between 0 and 1 as both hold and setup simulation

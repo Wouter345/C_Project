@@ -4,8 +4,6 @@ module top_system #(
     // these initial values are overwritten by tbench_top
     parameter int IO_DATA_WIDTH = 16,
     parameter int ACCUMULATION_WIDTH = 32,
-    parameter int EXT_MEM_HEIGHT = 1 << 20,
-    parameter int EXT_MEM_WIDTH = ACCUMULATION_WIDTH,
     parameter int FEATURE_MAP_WIDTH = 1024,
     parameter int FEATURE_MAP_HEIGHT = 1024,
     parameter int INPUT_NB_CHANNELS = 64,
@@ -21,8 +19,8 @@ module top_system #(
     // 2: step = 4
 
     //system inputs and outputs
-    input logic [IO_DATA_WIDTH-1:0] a_input, // A is feature word
-    input logic [IO_DATA_WIDTH-1:0] b_input, // B is kernel word
+    input logic [IO_DATA_WIDTH-1:0] a_input, 
+    input logic [IO_DATA_WIDTH-1:0] b_input, 
     input logic a_valid,
     output logic a_ready,
     
@@ -42,8 +40,6 @@ module top_system #(
   top_chip #(
       .IO_DATA_WIDTH(IO_DATA_WIDTH),
       .ACCUMULATION_WIDTH(ACCUMULATION_WIDTH),
-      .EXT_MEM_HEIGHT(EXT_MEM_HEIGHT),
-      .EXT_MEM_WIDTH(EXT_MEM_WIDTH),
       .FEATURE_MAP_WIDTH(FEATURE_MAP_WIDTH),
       .FEATURE_MAP_HEIGHT(FEATURE_MAP_HEIGHT),
       .INPUT_NB_CHANNELS(INPUT_NB_CHANNELS),

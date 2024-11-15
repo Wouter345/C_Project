@@ -73,7 +73,7 @@ module super_mac #(
         .a(a),
         
         .b(b0),
-        .out(mac_out0)
+        .out(out0)
     );
     
     // MAC_unit 1
@@ -92,7 +92,7 @@ module super_mac #(
         .a(a),
         
         .b(b1),
-        .out(mac_out1)
+        .out(out1)
     );
     
     // MAC_unit 2
@@ -111,7 +111,7 @@ module super_mac #(
         .a(a),
         
         .b(b2),
-        .out(mac_out2)
+        .out(out2)
     );
     
     // MAC_unit 3
@@ -130,7 +130,7 @@ module super_mac #(
         .a(a),
         
         .b(b3),
-        .out(mac_out3)
+        .out(out3)
     );
     
     // MAC_unit 4
@@ -149,7 +149,7 @@ module super_mac #(
         .a(a),
         
         .b(b4),
-        .out(mac_out4)
+        .out(out4)
     );
     
     // MAC_unit 5
@@ -168,7 +168,7 @@ module super_mac #(
         .a(a),
         
         .b(b5),
-        .out(mac_out5)
+        .out(out5)
     );
     
     // MAC_unit 6
@@ -187,7 +187,7 @@ module super_mac #(
         .a(a),
         
         .b(b6),
-        .out(mac_out6)
+        .out(out6)
     );
     
     // MAC_unit 0
@@ -206,7 +206,7 @@ module super_mac #(
         .a(a),
         
         .b(b7),
-        .out(mac_out7)
+        .out(out7)
     );
     
     // MAC_unit 8
@@ -225,7 +225,7 @@ module super_mac #(
         .a(a),
         
         .b(b8),
-        .out(mac_out8)
+        .out(out8)
     );
     
     // MAC_unit 9
@@ -244,7 +244,7 @@ module super_mac #(
         .a(a),
         
         .b(b9),
-        .out(mac_out9)
+        .out(out9)
     );
     
     // MAC_unit 10
@@ -263,7 +263,7 @@ module super_mac #(
         .a(a),
         
         .b(b10),
-        .out(mac_out10)
+        .out(out10)
     );
     
     // MAC_unit 0
@@ -282,7 +282,7 @@ module super_mac #(
         .a(a),
         
         .b(b11),
-        .out(mac_out11)
+        .out(out11)
     );
     
     // MAC_unit 12
@@ -301,7 +301,7 @@ module super_mac #(
         .a(a),
         
         .b(b12),
-        .out(mac_out12)
+        .out(out12)
     );
     
     // MAC_unit 13
@@ -320,7 +320,7 @@ module super_mac #(
         .a(a),
         
         .b(b13),
-        .out(mac_out13)
+        .out(out13)
     );
     
     // MAC_unit 14
@@ -339,7 +339,7 @@ module super_mac #(
         .a(a),
         
         .b(b14),
-        .out(mac_out14)
+        .out(out14)
     );
     
     // MAC_unit 15
@@ -358,7 +358,7 @@ module super_mac #(
         .a(a),
         
         .b(b15),
-        .out(mac_out15)
+        .out(out15)
     );
 
 

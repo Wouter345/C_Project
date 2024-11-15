@@ -2,12 +2,10 @@ module top_chip #(
     //initial values are overwritten by tbench_top
     parameter int IO_DATA_WIDTH = 16,
     parameter int ACCUMULATION_WIDTH = 32,
-    parameter int EXT_MEM_HEIGHT = 1 << 20,
-    parameter int EXT_MEM_WIDTH = ACCUMULATION_WIDTH,
-    parameter int FEATURE_MAP_WIDTH = 1024,
-    parameter int FEATURE_MAP_HEIGHT = 1024,
-    parameter int INPUT_NB_CHANNELS = 64,
-    parameter int OUTPUT_NB_CHANNELS = 64
+    parameter int FEATURE_MAP_WIDTH = 128,
+    parameter int FEATURE_MAP_HEIGHT = 128,
+    parameter int INPUT_NB_CHANNELS = 2,
+    parameter int OUTPUT_NB_CHANNELS = 32
 ) (
     input logic clk,
     input logic arst_n_in, //asynchronous reset, active low
@@ -156,23 +154,23 @@ module top_chip #(
   
   // Defines din for REGs Next_Feature_i
   assign Next_Feature_0_next = a_input;
+  assign Next_Feature_1_next = a_input;
   assign Next_Feature_2_next = a_input;
+  assign Next_Feature_3_next = a_input;
   assign Next_Feature_4_next = a_input;
+  assign Next_Feature_5_next = a_input;
   assign Next_Feature_6_next = a_input;
+  assign Next_Feature_7_next = a_input;
   assign Next_Feature_8_next = a_input;
-  assign Next_Feature_10_next = a_input;
-  assign Next_Feature_12_next = a_input;
-  assign Next_Feature_14_next = a_input;
-  assign Next_Feature_16_next = a_input;
 
-  assign Next_Feature_1_next = b_input;
-  assign Next_Feature_3_next = b_input;
-  assign Next_Feature_5_next = b_input;
-  assign Next_Feature_7_next = b_input;
   assign Next_Feature_9_next = b_input;
+  assign Next_Feature_10_next = b_input;
   assign Next_Feature_11_next = b_input;
+  assign Next_Feature_12_next = b_input;
   assign Next_Feature_13_next = b_input;
+  assign Next_Feature_14_next = b_input;
   assign Next_Feature_15_next = b_input;
+  assign Next_Feature_16_next = b_input;
   assign Next_Feature_17_next = b_input;
   
   // Defines din for REGs Output_i
@@ -231,7 +229,7 @@ module top_chip #(
   assign Output_14_we = Output_we;
   assign Output_15_we = Output_we;
   
-  // Define 18 to 1 mux for feature input 
+  // Define 18 to 1 mux for feature input to macs
   logic [IO_DATA_WIDTH-1:0] super_mac_a;
   logic [4:0] mux18_select;
   always @(*) begin
@@ -258,6 +256,32 @@ module top_chip #(
     endcase
   end
   
+  // Define 16 to 1 mux for selection of output to interface
+  logic signed [IO_DATA_WIDTH-1:0] output_data;
+  assign out = output_data;
+  always @(*) begin
+    case (output_ch)
+        5'd0: output_data = Output_0;
+        5'd1: output_data = Output_1;
+        5'd2: output_data = Output_2;
+        5'd3: output_data = Output_3;
+        5'd4: output_data = Output_4;
+        5'd5: output_data = Output_5;
+        5'd6: output_data = Output_6;
+        5'd7: output_data = Output_7;
+        5'd8: output_data = Output_8;
+        5'd9: output_data = Output_9;
+        5'd10: output_data = Output_10;
+        5'd11: output_data = Output_11;
+        5'd12: output_data = Output_12;
+        5'd13: output_data = Output_13;
+        5'd14: output_data = Output_14;
+        5'd15: output_data = Output_15;
+      default: output_data = 0; // Default case for invalid select values
+    endcase
+  end
+        
+  
      logic mac_valid;
      logic mac_accumulate_internal;
   
@@ -266,7 +290,7 @@ module top_chip #(
       .A_WIDTH(IO_DATA_WIDTH),
       .B_WIDTH(IO_DATA_WIDTH),
       .ACCUMULATOR_WIDTH(ACCUMULATION_WIDTH),
-      .OUTPUT_WIDTH(ACCUMULATION_WIDTH),
+      .OUTPUT_WIDTH(IO_DATA_WIDTH),
       .OUTPUT_SCALE(0)
   ) super_mac_unit (
       // Global inputs 
@@ -324,7 +348,7 @@ module top_chip #(
     KERNEL_SRAM # (
         .WIDTH(IO_DATA_WIDTH),
         .HEIGHT(128),
-        .USED_AS_EXTERNAL_MEMORY(0)
+        .USED_AS_EXTERNAL_MEM(0)
    )KERNEL_SRAM(
       .clk(clk),
       .KERNEL_read_addr(KERNEL_read_addr),
@@ -368,7 +392,7 @@ module top_chip #(
       .KERNEL_qout_0(KERNEL_out0),
       .KERNEL_qout_1(KERNEL_out1),
       .KERNEL_qout_2(KERNEL_out2),
-      .KERNEL_qout_3(KERNEL_out4),
+      .KERNEL_qout_3(KERNEL_out3),
       .KERNEL_qout_4(KERNEL_out4),
       .KERNEL_qout_5(KERNEL_out5),
       .KERNEL_qout_6(KERNEL_out6),
@@ -378,14 +402,13 @@ module top_chip #(
       .KERNEL_qout_10(KERNEL_out10),
       .KERNEL_qout_11(KERNEL_out11),
       .KERNEL_qout_12(KERNEL_out12),
-      .KERNEL_qout_13(KERNEL_out14),
+      .KERNEL_qout_13(KERNEL_out13),
       .KERNEL_qout_14(KERNEL_out14),
       .KERNEL_qout_15(KERNEL_out15)
      );
 
 
  controller_fsm #(
-      .LOG2_OF_MEM_HEIGHT($clog2(EXT_MEM_HEIGHT)),
       .FEATURE_MAP_WIDTH (FEATURE_MAP_WIDTH),
       .FEATURE_MAP_HEIGHT(FEATURE_MAP_HEIGHT),
       .INPUT_NB_CHANNELS (INPUT_NB_CHANNELS),
@@ -393,19 +416,68 @@ module top_chip #(
   ) controller (
       .clk(clk),
       .arst_n_in(arst_n_in),
+      
       .start(start),
       .running(running),
+      
       .conv_stride_mode(conv_stride_mode),
-
+      
       .a_valid(a_valid),
       .a_ready(a_ready),
-      .mac_valid(mac_valid),
-      .mac_accumulate_internal(mac_accumulate_internal),
-
+      
       .output_valid(output_valid),
       .output_x(output_x),
       .output_y(output_y),
-      .output_ch(output_ch)
+      .output_ch(output_ch),
+      
+      .Feature_we(Feature_we),
+      .Output_we(Output_we),
+    
+      .Next_Feature_0_we(Next_Feature_0_we),
+      .Next_Feature_1_we(Next_Feature_1_we),
+      .Next_Feature_2_we(Next_Feature_2_we),
+      .Next_Feature_3_we(Next_Feature_3_we),
+      .Next_Feature_4_we(Next_Feature_4_we),
+      .Next_Feature_5_we(Next_Feature_5_we),
+      .Next_Feature_6_we(Next_Feature_6_we),
+      .Next_Feature_7_we(Next_Feature_7_we),
+      .Next_Feature_8_we(Next_Feature_8_we),
+      .Next_Feature_9_we(Next_Feature_9_we),
+      .Next_Feature_10_we(Next_Feature_10_we),
+      .Next_Feature_11_we(Next_Feature_11_we),
+      .Next_Feature_12_we(Next_Feature_12_we),
+      .Next_Feature_13_we(Next_Feature_13_we),
+      .Next_Feature_14_we(Next_Feature_14_we),
+      .Next_Feature_15_we(Next_Feature_15_we),
+      .Next_Feature_16_we(Next_Feature_16_we),
+      .Next_Feature_17_we(Next_Feature_17_we),
+      
+      .mux18_select(mux18_select),
+      .mac_valid(mac_valid),
+      .mac_accumulate_internal(mac_accumulate_internal),
+
+      .KERNEL_read_addr(KERNEL_read_addr),
+      .KERNEL_write_addr(KERNEL_write_addr),
+      .KERNEL_re(KERNEL_re),
+    
+    
+      .KERNEL_we_0(KERNEL_we_0),
+      .KERNEL_we_1(KERNEL_we_1),
+      .KERNEL_we_2(KERNEL_we_2),
+      .KERNEL_we_3(KERNEL_we_3),
+      .KERNEL_we_4(KERNEL_we_4),
+      .KERNEL_we_5(KERNEL_we_5),
+      .KERNEL_we_6(KERNEL_we_6),
+      .KERNEL_we_7(KERNEL_we_7),
+      .KERNEL_we_8(KERNEL_we_8),
+      .KERNEL_we_9(KERNEL_we_9),
+      .KERNEL_we_10(KERNEL_we_10),
+      .KERNEL_we_11(KERNEL_we_11),
+      .KERNEL_we_12(KERNEL_we_12),
+      .KERNEL_we_13(KERNEL_we_13),
+      .KERNEL_we_14(KERNEL_we_14),
+      .KERNEL_we_15(KERNEL_we_15)
+      
   );
 
   

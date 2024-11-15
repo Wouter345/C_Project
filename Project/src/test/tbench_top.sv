@@ -8,8 +8,6 @@ module tbench_top;
 
   localparam int DATA_WIDTH = 16;
   localparam int ACCUMULATION_WIDTH = 32;
-  localparam int EXT_MEM_HEIGHT = 32;
-  localparam int EXT_MEM_WIDTH = ACCUMULATION_WIDTH;
   localparam int FEATURE_MAP_WIDTH = 128;
   localparam int FEATURE_MAP_HEIGHT = 128;
 
@@ -23,8 +21,6 @@ module tbench_top;
   localparam config_t cfg = '{
       DATA_WIDTH,
       ACCUMULATION_WIDTH,
-      EXT_MEM_HEIGHT,
-      EXT_MEM_WIDTH,
       FEATURE_MAP_WIDTH,
       FEATURE_MAP_HEIGHT,
       INPUT_NB_CHANNELS,
@@ -48,8 +44,6 @@ module tbench_top;
   top_system #(
       .IO_DATA_WIDTH     (DATA_WIDTH),
       .ACCUMULATION_WIDTH(ACCUMULATION_WIDTH),
-      .EXT_MEM_HEIGHT    (EXT_MEM_HEIGHT),
-      .EXT_MEM_WIDTH     (EXT_MEM_WIDTH),
       .FEATURE_MAP_WIDTH (FEATURE_MAP_WIDTH),
       .FEATURE_MAP_HEIGHT(FEATURE_MAP_HEIGHT),
       .INPUT_NB_CHANNELS (INPUT_NB_CHANNELS),

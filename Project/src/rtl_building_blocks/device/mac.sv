@@ -11,8 +11,7 @@ module mac #(
 
   //input interface
   input logic input_valid,
-  input logic accumulate_internal, //accumulate (accumulator <= a*b + accumulator) if high (1) or restart accumulation (accumulator <= a*b+0) if low (0)
-  input logic [ACCUMULATOR_WIDTH-1:0] partial_sum_in,
+  input logic accumulate_internal, //accumulate (accumulator <= a*b + accumulator) if high (1) or restart accumulation (accumulator <= a*b+0) if low (0),
   input logic signed [A_WIDTH-1:0] a,
   input logic signed [B_WIDTH-1:0] b,
 
@@ -26,9 +25,9 @@ module mac #(
                        |  ____________
                        \ /          __\______
                         +          /1___0__SEL\ <-- accumulate_internal
-                        |           |   \------------ <-- partial_sum_in
-                        |           |
-                     ___|___________|----------> >> ---> out__
+                        |           |   \------------ 0
+             out <- - - |           |
+                     ___|___________|
                     |  d            q  |
     input_valid --> |we       arst_n_in| <-- arst_n_in
                     |___clk____________|
@@ -55,7 +54,7 @@ module mac #(
   assign accumulator_value_next = sum;
 
   logic signed [ACCUMULATOR_WIDTH-1:0] adder_b;
-  assign adder_b = accumulate_internal ? accumulator_value : partial_sum_in;
+  assign adder_b = accumulate_internal ? accumulator_value : 32'd0;
   adder #( .A_WIDTH(ACCUMULATOR_WIDTH),
            .B_WIDTH(ACCUMULATOR_WIDTH),
            .OUT_WIDTH(ACCUMULATOR_WIDTH),
@@ -65,6 +64,6 @@ module mac #(
      .b(adder_b),
      .out(sum));
 
-  assign out = accumulator_value >>> OUTPUT_SCALE;
+  assign out = sum >>> OUTPUT_SCALE;
 
 endmodule
