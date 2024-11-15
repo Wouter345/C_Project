@@ -80,6 +80,36 @@ module controller_fsm #(
     
 );
 
+  // FINITE STATE MACHINE 
+  typedef enum {
+    IDLE,                   // idle state, wait for start signal
+    FETCH_KERNEL,           // 144 cycles: read in kernel data
+    FETCH_INITIAL_FEATURE,  // 9 cycles: read in first 18 feature data
+    WRITE_THROUGH,          // 1 cycle: write Next_Features to Features
+    COMPUTE0,               // 18 cycles for compute state: decided to split it up into different states for better overview
+    COMPUTE1,               
+    COMPUTE2,
+    COMPUTE3,               
+    COMPUTE4,
+    COMPUTE5,               // in compute state: send 16 previous outputs to testbench, read 18 next inputs from testbench, do 16 parallel mac operations
+    COMPUTE6,
+    COMPUTE7,
+    COMPUTE8,
+    COMPUTE9,
+    COMPUTE10,
+    COMPUTE11,
+    COMPUTE12,
+    COMPUTE13,
+    COMPUTE14,
+    COMPUTE15,
+    COMPUTE16,
+    COMPUTE17,
+    WRITEBACK               // 16 cycles: Final 16 outputs send back to testbench
+  } fsm_state_e;
+
+  fsm_state_e current_state;
+  fsm_state_e next_state;
+
   // Define stride and kernel size
   logic [2:0] conv_stride;
   assign conv_stride = 1 << conv_stride_mode; //1;2;4
@@ -223,35 +253,7 @@ module controller_fsm #(
   );
   assign output_ch = OUTPUT_COUNTER;
   
-  // FINITE STATE MACHINE 
-  typedef enum {
-    IDLE,                   // idle state, wait for start signal
-    FETCH_KERNEL,           // 144 cycles: read in kernel data
-    FETCH_INITIAL_FEATURE,  // 9 cycles: read in first 18 feature data
-    WRITE_THROUGH,          // 1 cycle: write Next_Features to Features
-    COMPUTE0,               // 18 cycles for compute state: decided to split it up into different states for better overview
-    COMPUTE1,               
-    COMPUTE2,
-    COMPUTE3,               
-    COMPUTE4,
-    COMPUTE5,               // in compute state: send 16 previous outputs to testbench, read 18 next inputs from testbench, do 16 parallel mac operations
-    COMPUTE6,
-    COMPUTE7,
-    COMPUTE8,
-    COMPUTE9,
-    COMPUTE10,
-    COMPUTE11,
-    COMPUTE12,
-    COMPUTE13,
-    COMPUTE14,
-    COMPUTE15,
-    COMPUTE16,
-    COMPUTE17,
-    WRITEBACK               // 16 cycles: Final 16 outputs send back to testbench
-  } fsm_state_e;
 
-  fsm_state_e current_state;
-  fsm_state_e next_state;
   always @(posedge clk or negedge arst_n_in) begin
     if (arst_n_in == 0) begin
       current_state <= IDLE;
@@ -399,6 +401,8 @@ module controller_fsm #(
             Next_Feature_16_we = 0;
             Next_Feature_17_we = 0;
             
+            KERNEL_re = 0;
+            
                   
         end
         
@@ -447,6 +451,7 @@ module controller_fsm #(
             
             Next_Feature_0_we = 1;
             Next_Feature_9_we = 1;
+            KERNEL_re = 1;
         end
         
         COMPUTE1: begin
@@ -461,6 +466,7 @@ module controller_fsm #(
             Next_Feature_10_we = 1;
             
             KERNEL_read_addr = 1;
+            KERNEL_re = 1;
         end
         
         COMPUTE2: begin
@@ -474,6 +480,7 @@ module controller_fsm #(
             Next_Feature_11_we = 1;
             
             KERNEL_read_addr = 2;
+            KERNEL_re = 1;
         end
         
         COMPUTE3: begin
@@ -487,6 +494,7 @@ module controller_fsm #(
             Next_Feature_12_we = 1;
             
             KERNEL_read_addr = 3;
+            KERNEL_re = 1;
         end
         
         COMPUTE4: begin
@@ -500,6 +508,7 @@ module controller_fsm #(
             Next_Feature_13_we = 1;
             
             KERNEL_read_addr = 4;
+            KERNEL_re = 1;
         end
         
         COMPUTE5: begin
@@ -513,6 +522,7 @@ module controller_fsm #(
             Next_Feature_14_we = 1;
             
             KERNEL_read_addr = 5;
+            KERNEL_re = 1;
         end
         
         COMPUTE6: begin
@@ -526,6 +536,7 @@ module controller_fsm #(
             Next_Feature_15_we = 1;
             
             KERNEL_read_addr = 6;
+            KERNEL_re = 1;
         end
         
         COMPUTE7: begin
@@ -539,6 +550,7 @@ module controller_fsm #(
             Next_Feature_16_we = 1;
             
             KERNEL_read_addr = 7;
+            KERNEL_re = 1;
         end
         
         COMPUTE8: begin
@@ -552,6 +564,7 @@ module controller_fsm #(
             Next_Feature_17_we = 1;
             
             KERNEL_read_addr = 8;
+            KERNEL_re = 1;
         end
         
         COMPUTE9: begin
@@ -561,6 +574,7 @@ module controller_fsm #(
             OUTPUT_COUNTER_we = 1;
             
             KERNEL_read_addr = 9;
+            KERNEL_re = 1;
         end
         
         COMPUTE10: begin
@@ -570,6 +584,7 @@ module controller_fsm #(
             OUTPUT_COUNTER_we = 1;
             
             KERNEL_read_addr = 10;
+            KERNEL_re = 1;
         end
         
         COMPUTE11: begin
@@ -579,6 +594,7 @@ module controller_fsm #(
             OUTPUT_COUNTER_we = 1;
             
             KERNEL_read_addr = 11;
+            KERNEL_re = 1;
         end
         
         COMPUTE12: begin
@@ -588,6 +604,7 @@ module controller_fsm #(
             OUTPUT_COUNTER_we = 1;
             
             KERNEL_read_addr = 12;
+            KERNEL_re = 1;
         end
         
         COMPUTE13: begin
@@ -597,6 +614,7 @@ module controller_fsm #(
             OUTPUT_COUNTER_we = 1;
             
             KERNEL_read_addr = 13;
+            KERNEL_re = 1;
         end
         
         COMPUTE14: begin
@@ -606,6 +624,7 @@ module controller_fsm #(
             OUTPUT_COUNTER_we = 1;
             
             KERNEL_read_addr = 14;
+            KERNEL_re = 1;
         end
         
         COMPUTE15: begin
@@ -615,6 +634,7 @@ module controller_fsm #(
             OUTPUT_COUNTER_we = 1;
             
             KERNEL_read_addr = 15;
+            KERNEL_re = 1;
         end
         
         COMPUTE16: begin
@@ -622,6 +642,7 @@ module controller_fsm #(
             mac_valid = 1;
             
             KERNEL_read_addr = 16;
+            KERNEL_re = 1;
         end
         
         COMPUTE17: begin
@@ -630,6 +651,7 @@ module controller_fsm #(
             mux18_select = 17;
             
             KERNEL_read_addr = 17;
+            KERNEL_re = 1;
         end
         
         WRITEBACK: begin
