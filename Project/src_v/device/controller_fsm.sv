@@ -131,14 +131,11 @@ module controller_fsm #(
   assign OUTPUT_COUNTER_next = last_OUTPUT_COUNTER ? 0 : OUTPUT_COUNTER + 5'd1;
   assign COMPUTE_COUNTER_next = last_COMPUTE_COUNTER ? 0 : COMPUTE_COUNTER + 5'd1;
   
-  assign last_x = x >= FEATURE_MAP_WIDTH - conv_stride; //if next step falls outside of feature map width --> reset
-  assign last_y = y >= FEATURE_MAP_HEIGHT - conv_stride;
+  assign last_x = (x >= FEATURE_MAP_WIDTH - conv_stride); //if next step falls outside of feature map width --> reset
+  assign last_y = (y >= FEATURE_MAP_HEIGHT - conv_stride);
   assign last_KERNEL_COUNTER = (KERNEL_COUNTER == 4'd7);
   assign last_OUTPUT_COUNTER = (OUTPUT_COUNTER == 5'd15);
-  assign last_COMPUTE_COUNTER = (COMPUTE_COUNTER == 17);
-	
-
-
+  assign last_COMPUTE_COUNTER = (COMPUTE_COUNTER == 18);
 
   // when to update loop counters
   assign y_we      = (current_state==COMPUTE17); 
@@ -173,24 +170,23 @@ module controller_fsm #(
   
   always_comb
   begin
-  	KERNEL_we_0 = 0;
-            KERNEL_we_1 = 0;
-            KERNEL_we_2 = 0;
-            KERNEL_we_3 = 0;
-            KERNEL_we_4 = 0;
-            KERNEL_we_5 = 0;
-            KERNEL_we_6 = 0;
-            KERNEL_we_7 = 0;
-            KERNEL_we_8 = 0;
-            KERNEL_we_9 = 0;
-            KERNEL_we_10 = 0;
-            KERNEL_we_11 = 0;
-            KERNEL_we_12 = 0;
-            KERNEL_we_13 = 0;
-            KERNEL_we_14 = 0;
-            KERNEL_we_15 = 0;
+    KERNEL_we_0 = 0;
+    KERNEL_we_1 = 0;
+    KERNEL_we_2 = 0;
+    KERNEL_we_3 = 0;
+    KERNEL_we_4 = 0;
+    KERNEL_we_5 = 0;
+    KERNEL_we_6 = 0;
+    KERNEL_we_7 = 0;
+    KERNEL_we_8 = 0;
+    KERNEL_we_9 = 0;
+    KERNEL_we_10 = 0;
+    KERNEL_we_11 = 0;
+    KERNEL_we_12 = 0;
+    KERNEL_we_13 = 0;
+    KERNEL_we_14 = 0;
+    KERNEL_we_15 = 0;
     case(KERNEL_COUNTER)
-	
         
         0: begin
             KERNEL_we_0 = (current_state==FETCH_KERNEL);
@@ -242,7 +238,7 @@ module controller_fsm #(
       .arst_n_in(arst_n_in),
       .din(x),
       .qout(output_x),
-      .we(y_we)
+      .we(x_we)
   );
   register #(
       .WIDTH(7)
@@ -278,7 +274,7 @@ module controller_fsm #(
       end
       
       FETCH_INITIAL_FEATURE: begin
-          next_state = (COMPUTE_COUNTER==5'd8) ? WRITE_THROUGH : FETCH_INITIAL_FEATURE;
+          next_state = last_COMPUTE_COUNTER ? WRITE_THROUGH : FETCH_INITIAL_FEATURE;
       end
       
       WRITE_THROUGH: begin
@@ -369,41 +365,40 @@ module controller_fsm #(
   // CONTROL SIGNALS THAT ARE ONLY DEPENDANT ON THE STATE
   always_comb
   begin
-	running = 1;
-            a_ready = 0;
-            Feature_we = 0;
-            Output_we = 0;
-            output_valid = 0;
-            mux18_select = 0;
-            mac_valid = 0;
-            mac_accumulate_internal = 1;
-            OUTPUT_COUNTER_we = 0;
-            
-            KERNEL_read_addr = 0;
-            
-            Next_Feature_0_we = 0;
-            Next_Feature_1_we = 0;
-            Next_Feature_2_we = 0;
-            Next_Feature_3_we = 0;
-            Next_Feature_4_we = 0;
-            Next_Feature_5_we = 0;
-            Next_Feature_6_we = 0;
-            Next_Feature_7_we = 0;
-            Next_Feature_8_we = 0;
-            Next_Feature_9_we = 0;
-            Next_Feature_10_we = 0;
-            Next_Feature_11_we = 0;
-            Next_Feature_12_we = 0;
-            Next_Feature_13_we = 0;
-            Next_Feature_14_we = 0;
-            Next_Feature_15_we = 0;
-            Next_Feature_16_we = 0;
-            Next_Feature_17_we = 0;
-            
-            KERNEL_re = 0;
+  running = 1;
+    a_ready = 0;
+    Feature_we = 0;
+    Output_we = 0;
+    output_valid = 0;
+    mux18_select = 0;
+    mac_valid = 0;
+    mac_accumulate_internal = 1;
+    OUTPUT_COUNTER_we = 0;
+    
+    KERNEL_read_addr = 0;
+    
+    Next_Feature_0_we = 0;
+    Next_Feature_1_we = 0;
+    Next_Feature_2_we = 0;
+    Next_Feature_3_we = 0;
+    Next_Feature_4_we = 0;
+    Next_Feature_5_we = 0;
+    Next_Feature_6_we = 0;
+    Next_Feature_7_we = 0;
+    Next_Feature_8_we = 0;
+    Next_Feature_9_we = 0;
+    Next_Feature_10_we = 0;
+    Next_Feature_11_we = 0;
+    Next_Feature_12_we = 0;
+    Next_Feature_13_we = 0;
+    Next_Feature_14_we = 0;
+    Next_Feature_15_we = 0;
+    Next_Feature_16_we = 0;
+    Next_Feature_17_we = 0;
+    
+    KERNEL_re = 0;
     // CONTROL SIGNAL VALUES FOR EACH STATE HERE  
     case(current_state)
-        
         
         IDLE: begin
             running = 0;

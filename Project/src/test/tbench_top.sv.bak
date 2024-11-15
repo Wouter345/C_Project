@@ -15,7 +15,7 @@ module tbench_top;
   localparam int INPUT_NB_CHANNELS = 2;
   localparam int OUTPUT_NB_CHANNELS = 16;
   localparam int KERNEL_SIZE = 3;
-  localparam int CONV_STEP = 1;
+  localparam int CONV_STEP = 4;
 
   // initialize config_t structure, which is used to parameterize all other classes of the testbench (common.sv)
   localparam config_t cfg = '{

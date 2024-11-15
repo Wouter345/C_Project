@@ -142,7 +142,7 @@ module controller_fsm #(
 
   // when to update loop counters
   assign y_we      = (current_state==COMPUTE17); 
-  assign x_we      = (current_state==COMPUTE17) && last_y;
+  assign x_we      = (current_state==COMPUTE17);
   assign KERNEL_COUNTER_we = (current_state==FETCH_KERNEL) && last_COMPUTE_COUNTER;
   // assign OUTPUT_COUNTER_we = ; --> happens in state control logic
   assign COMPUTE_COUNTER_we = (current_state==FETCH_INITIAL_FEATURE)||(current_state==FETCH_KERNEL);
@@ -242,7 +242,7 @@ module controller_fsm #(
       .arst_n_in(arst_n_in),
       .din(x),
       .qout(output_x),
-      .we(y_we)
+      .we(x_we)
   );
   register #(
       .WIDTH(7)
