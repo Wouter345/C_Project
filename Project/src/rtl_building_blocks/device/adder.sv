@@ -27,7 +27,7 @@ module adder #(
   always @(out_wo_delay) begin
     // random delay between 0 and 1 as both hold and setup simulation
     int delay_x100;
-    void'(std::randomize(delay_x100) with {delay_x100 dist {1:=1, [2:99]:/1};});
+    delay_x100 = 1;
     fork begin
       fork begin
         #(delay_x100/100.0);

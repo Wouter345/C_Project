@@ -70,6 +70,25 @@ module top_chip #(
   logic [IO_DATA_WIDTH-1:0] KERNEL_out14;
   logic [IO_DATA_WIDTH-1:0] KERNEL_out15;
   
+  // Define KERNEL Write Enables
+  logic KERNEL_we_0;
+  logic KERNEL_we_1;
+  logic KERNEL_we_2;
+  logic KERNEL_we_3;
+  logic KERNEL_we_4;
+  logic KERNEL_we_5;
+  logic KERNEL_we_6;
+  logic KERNEL_we_7;
+  logic KERNEL_we_8;
+  logic KERNEL_we_9;
+  logic KERNEL_we_10;
+  logic KERNEL_we_11;
+  logic KERNEL_we_12;
+  logic KERNEL_we_13;
+  logic KERNEL_we_14;
+  logic KERNEL_we_15;
+  
+  
 
   
   // Define REGs Feature_i (18 regs)
