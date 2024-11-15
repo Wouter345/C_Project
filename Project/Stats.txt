@@ -1,0 +1,41 @@
+For 	IX=IY=128
+	Kernel_size = 3*3
+
+------------------ORIGINAL_STATS------------------
+STRIDE=1:	AREA	= 13_345
+		LATENCY	= 28_311_552ns	= 28.3ms
+		ENERGY	= 255_852_784
+		EDP	= 7_243_589
+		
+STRIDE=2:	AREA	= 13_345
+		LATENCY	= 7_077_888ns	= 7.01ms
+		ENERGY	= 63_963_376
+		EDP	= 452_726
+
+STRIDE=4:	AREA	= 13_345
+		LATENCY	= 1_769_472ns	= 1.77ms
+		ENERGY	= 15_991_024
+		EDP	= 28_296
+
+
+--------------------NEW_STATS--------------------
+STRIDE=1:	AREA	= 165_130
+		LATENCY	= 590_080ns	= 0.59ms
+		ENERGY	= 16_466_397
+		EDP	= 9_716
+		
+STRIDE=2:	AREA	= 165_130
+		LATENCY	= 147_712ns	= 0.147ms
+		ENERGY	= 4_119_414
+		EDP	= 608
+
+STRIDE=4:	AREA	= 165_130
+		LATENCY	= 37_120ns	= 0.037ms
+		ENERGY	= 1_032_669
+		EDP	= 38
+
+
+AREA 	increased by factor 	12.374
+LATENCY decreased by factor 	47.5-48
+ENERGY 	decreased by factor	14.4
+EDP 	decreased by factor	745
