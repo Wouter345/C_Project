@@ -170,25 +170,23 @@ module controller_fsm #(
   
   always_comb
   begin
+    KERNEL_we_0 = 0;
+    KERNEL_we_1 = 0;
+    KERNEL_we_2 = 0;
+    KERNEL_we_3 = 0;
+    KERNEL_we_4 = 0;
+    KERNEL_we_5 = 0;
+    KERNEL_we_6 = 0;
+    KERNEL_we_7 = 0;
+    KERNEL_we_8 = 0;
+    KERNEL_we_9 = 0;
+    KERNEL_we_10 = 0;
+    KERNEL_we_11 = 0;
+    KERNEL_we_12 = 0;
+    KERNEL_we_13 = 0;
+    KERNEL_we_14 = 0;
+    KERNEL_we_15 = 0;
     case(KERNEL_COUNTER)
-        default: begin
-            KERNEL_we_0 = 0;
-            KERNEL_we_1 = 0;
-            KERNEL_we_2 = 0;
-            KERNEL_we_3 = 0;
-            KERNEL_we_4 = 0;
-            KERNEL_we_5 = 0;
-            KERNEL_we_6 = 0;
-            KERNEL_we_7 = 0;
-            KERNEL_we_8 = 0;
-            KERNEL_we_9 = 0;
-            KERNEL_we_10 = 0;
-            KERNEL_we_11 = 0;
-            KERNEL_we_12 = 0;
-            KERNEL_we_13 = 0;
-            KERNEL_we_14 = 0;
-            KERNEL_we_15 = 0;
-        end
         
         0: begin
             KERNEL_we_0 = (current_state==FETCH_KERNEL);
@@ -367,44 +365,40 @@ module controller_fsm #(
   // CONTROL SIGNALS THAT ARE ONLY DEPENDANT ON THE STATE
   always_comb
   begin
+  running = 1;
+    a_ready = 0;
+    Feature_we = 0;
+    Output_we = 0;
+    output_valid = 0;
+    mux18_select = 0;
+    mac_valid = 0;
+    mac_accumulate_internal = 1;
+    OUTPUT_COUNTER_we = 0;
+    
+    KERNEL_read_addr = 0;
+    
+    Next_Feature_0_we = 0;
+    Next_Feature_1_we = 0;
+    Next_Feature_2_we = 0;
+    Next_Feature_3_we = 0;
+    Next_Feature_4_we = 0;
+    Next_Feature_5_we = 0;
+    Next_Feature_6_we = 0;
+    Next_Feature_7_we = 0;
+    Next_Feature_8_we = 0;
+    Next_Feature_9_we = 0;
+    Next_Feature_10_we = 0;
+    Next_Feature_11_we = 0;
+    Next_Feature_12_we = 0;
+    Next_Feature_13_we = 0;
+    Next_Feature_14_we = 0;
+    Next_Feature_15_we = 0;
+    Next_Feature_16_we = 0;
+    Next_Feature_17_we = 0;
+    
+    KERNEL_re = 0;
     // CONTROL SIGNAL VALUES FOR EACH STATE HERE  
     case(current_state)
-        default: begin
-            running = 1;
-            a_ready = 0;
-            Feature_we = 0;
-            Output_we = 0;
-            output_valid = 0;
-            mux18_select = 0;
-            mac_valid = 0;
-            mac_accumulate_internal = 1;
-            OUTPUT_COUNTER_we = 0;
-            
-            KERNEL_read_addr = 0;
-            
-            Next_Feature_0_we = 0;
-            Next_Feature_1_we = 0;
-            Next_Feature_2_we = 0;
-            Next_Feature_3_we = 0;
-            Next_Feature_4_we = 0;
-            Next_Feature_5_we = 0;
-            Next_Feature_6_we = 0;
-            Next_Feature_7_we = 0;
-            Next_Feature_8_we = 0;
-            Next_Feature_9_we = 0;
-            Next_Feature_10_we = 0;
-            Next_Feature_11_we = 0;
-            Next_Feature_12_we = 0;
-            Next_Feature_13_we = 0;
-            Next_Feature_14_we = 0;
-            Next_Feature_15_we = 0;
-            Next_Feature_16_we = 0;
-            Next_Feature_17_we = 0;
-            
-            KERNEL_re = 0;
-            
-                  
-        end
         
         IDLE: begin
             running = 0;
