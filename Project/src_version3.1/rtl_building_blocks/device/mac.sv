@@ -1,0 +1,84 @@
+module mac #(
+  parameter int A_WIDTH = 16,
+  parameter int B_WIDTH = 16,
+  parameter int ACCUMULATOR_WIDTH = 16,
+  parameter int OUTPUT_WIDTH = 16,
+  parameter int OUTPUT_SCALE = 0
+  )
+  (
+  input logic clk,
+  input logic arst_n_in, //asynchronous reset, active low
+
+  //input 
+  input logic input_valid,
+  input logic p_valid,
+  input logic accumulate_internal, //accumulate (accumulator <= a*b + accumulator) if high (1) or restart accumulation (accumulator <= a*b+0) if low (0),
+  input logic signed [A_WIDTH-1:0] a,
+  input logic signed [B_WIDTH-1:0] b,
+
+  //output
+  output logic signed [OUTPUT_WIDTH-1:0] out
+  );
+  /*
+  
+  pipelined multiply accumulate. 
+
+                a -->  *  <-- b
+                       |          clk
+                     __|___________|___
+                    |  d          clk  |
+        p_valid --> |we       arst_n_in| <-- arst_n_in
+                    |__q_______________|
+                       |
+                       |                        
+                       |
+                       |
+                       |  ____________
+                       \ /          __\______
+                        +          /1___0__SEL\ <-- accumulate_internal
+                        |           |   \------------ 0
+            out <------ |           |
+                     ___|___________|__
+                    |  d            q  |
+    input_valid --> |we       arst_n_in| <-- arst_n_in
+                    |___clk____________|
+                         |
+                        clk
+  */ 
+
+  logic signed [ACCUMULATOR_WIDTH-1:0] product;
+  multiplier #( .A_WIDTH(A_WIDTH),
+                .B_WIDTH(B_WIDTH),
+                .OUT_WIDTH(ACCUMULATOR_WIDTH),
+                .OUT_SCALE(0))
+    mul
+    (.a(a),
+     .b(b),
+     .out(product));
+
+  
+  `REG(ACCUMULATOR_WIDTH, p);
+  assign p_next = product;
+  assign p_we = p_valid;
+    
+    
+  `REG(ACCUMULATOR_WIDTH, accumulator);
+  logic signed [ACCUMULATOR_WIDTH-1:0] sum;
+  assign accumulator_next = sum;
+  assign accumulator_we = input_valid;
+
+
+  logic signed [ACCUMULATOR_WIDTH-1:0] adder_b;
+  assign adder_b = accumulate_internal ? accumulator : 0;
+  adder #( .A_WIDTH(ACCUMULATOR_WIDTH),
+           .B_WIDTH(ACCUMULATOR_WIDTH),
+           .OUT_WIDTH(ACCUMULATOR_WIDTH),
+           .OUT_SCALE(0))
+    add
+    (.a(p),
+     .b(adder_b),
+     .out(sum));
+
+  assign out = accumulator >>> OUTPUT_SCALE; 
+
+endmodule

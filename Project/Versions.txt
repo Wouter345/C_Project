@@ -1,0 +1,24 @@
+-----------Version 1----------
+clock_period = 2ns
+16 mac units working in parallel
+16 outputs in 18 cycles
+
+-----------Version 2.0----------
+double frequency: clock_period = 1ns
+pipelined mac units 	--> half the latency, 30% increase in energy
+		    	--> edp reduced by 35 %
+
+-----------Version 2.1----------
+replace KERNEL SRAM by registers --> register write does not require energy
+--> energy back the same as in version 1
+= sort of cheating
+
+-----------Version 3.0----------
+32 pipelined mac units working in parallel + 9 adders
+16 outputs in 12 cycles	--> latency reduced by 33% compared to v2, only very minor increase in energy
+			--> v3 is 3 times faster than v1
+use of KERNEL SRAM
+
+-----------Version 3.1----------
+same change as v2.1, reduces energy
+= sort of cheating

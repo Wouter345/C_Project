@@ -28,11 +28,11 @@ initial begin
   tbench_top.area += 17*WIDTH;
   $display("%m added %d to area", 17*WIDTH);
 end
-
-//energy logging
+// energy logging, added myself
 always @(posedge clk) begin
-    if(we)
-      tbench_top.energy += WIDTH*(0.1);
+    if (we) begin
+        tbench_top.energy += WIDTH*(0.1);
+     end
   end
 `endif
 
@@ -52,7 +52,6 @@ endmodule
 //     clk as clk
 //     arst_n_in as arst_n_in
 //E.g.: `REG(32, my_register);
-//see fifo for more examples of both manual instantiation and instantiation through this macro
 
 `define REG(r_width, r_name) \
 logic [r_width-1:0] ``r_name``_next, r_name;\

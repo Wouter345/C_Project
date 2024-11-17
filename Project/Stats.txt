@@ -17,25 +17,103 @@ STRIDE=4:	AREA	= 13_345
 		ENERGY	= 15_991_024
 		EDP	= 28_296
 
+----------------STATS IF REGISTER WRITES TAKES 0.1 ENERGY PER BIT----------------
 
---------------------NEW_STATS--------------------
-STRIDE=1:	AREA	= 165_130
-		LATENCY	= 590_080ns	= 0.59ms
-		ENERGY	= 16_466_397
-		EDP	= 9_716
+------------------ORIGINAL_STATS------------------
+STRIDE=1:	AREA	= 13_345
+		LATENCY	= 28_311_552ns	= 28.3ms
+		ENERGY	= 313_629_696 ->(+22.58%) || (18.42% energy for reg_write)
+		EDP	= 8_879_343	
 		
-STRIDE=2:	AREA	= 165_130
-		LATENCY	= 147_712ns	= 0.147ms
-		ENERGY	= 4_119_414
-		EDP	= 608
+STRIDE=2:	AREA	= 13_345
+		LATENCY	= 7_077_888ns	= 7.01ms
+		ENERGY	= 78_407_680 -> (+22.58%) || (18.42% energy for reg_write)
+		EDP	= 554_961
 
-STRIDE=4:	AREA	= 165_130
-		LATENCY	= 37_120ns	= 0.037ms
-		ENERGY	= 1_032_669
+STRIDE=4:	AREA	= 13_345
+		LATENCY	= 1_769_472ns	= 1.77ms
+		ENERGY	= 19_602_125 -> (+22.58%) || (18.42% energy for reg_write)
+		EDP	= 34_685
+
+--------------------VERSION 1--------------------
+STRIDE=1:	AREA	= 160_744
+		LATENCY	= 590_166ns	= 0.59ms
+		ENERGY	= 25_100_962 
+		EDP	= 14_814
+		
+STRIDE=2:	AREA	= 160_744
+		LATENCY	= 147_798ns	= 0.147ms
+		ENERGY	= 6_279_388
+		EDP	= 928
+
+STRIDE=4:	AREA	= 160_744
+		LATENCY	= 37_206ns	= 0.037ms
+		ENERGY	= 1_573_983
+		EDP	= 59
+
+--------------------VERSION 2.0--------------------
+STRIDE=1:	AREA	= 165_096
+		LATENCY	= 295_084ns	= 0.295ms
+		ENERGY	= 32_650_709 
+		EDP	= 9_635
+		
+STRIDE=2:	AREA	= 165_096
+		LATENCY	= 73_900ns	= 0.073ms
+		ENERGY	= 8_166_824
+		EDP	= 604
+
+STRIDE=4:	AREA	= 165_096
+		LATENCY	= 18_604ns	= 0.018ms
+		ENERGY	= 2_045_842
 		EDP	= 38
 
+--------------------VERSION 2.1----(cheating with KERNEL SRAM energy), so not 100% valid 
+STRIDE=1:	AREA	= 210_664
+		LATENCY	= 295_084ns	= 0.295ms
+		ENERGY	= 25_100_962 
+		EDP	= 7_407
+		
+STRIDE=2:	AREA	= 210_664
+		LATENCY	= 73_900ns	= 0.073ms
+		ENERGY	= 6_279_388
+		EDP	= 464
 
-AREA 	increased by factor 	12.374
-LATENCY decreased by factor 	47.5-48
-ENERGY 	decreased by factor	14.4
-EDP 	decreased by factor	745
+STRIDE=4:	AREA	= 210_664
+		LATENCY	= 18_604ns	= 0.018ms
+		ENERGY	= 1_573_983
+		EDP	= 29
+
+--------------------VERSION 3.0--------------------
+STRIDE=1:	AREA	= 331_300
+		LATENCY	= 196_766ns	= 0.196ms
+		ENERGY	= 33_491_853 
+		EDP	= 6_590
+		
+STRIDE=2:	AREA	= 331_300
+		LATENCY	= 49_310ns	= 0.049ms
+		ENERGY	= 8_378_822
+		EDP	= 413
+
+STRIDE=4:	AREA	= 331_300
+		LATENCY	= 12_446ns	= 0.012ms
+		ENERGY	= 2_100_554
+		EDP	= 26
+
+--------------------VERSION 3.1---(cheating with KERNEL SRAM energy), so not 100% valid
+
+STRIDE=1:	AREA	= 331_300
+		LATENCY	= 196_766ns	= 0.196ms
+		ENERGY	= 25_942_106 
+		EDP	= 5_105
+		
+STRIDE=2:	AREA	= 331_300
+		LATENCY	= 49_310ns	= 0.049ms
+		ENERGY	= 6_491_386
+		EDP	= 320
+
+STRIDE=4:	AREA	= 331_300
+		LATENCY	= 12_446ns	= 0.012ms
+		ENERGY	= 1_628_694
+		EDP	= 20
+
+
