@@ -17,6 +17,7 @@ replace KERNEL SRAM by registers --> register write does not require energy
 32 pipelined mac units working in parallel + 9 adders
 16 outputs in 12 cycles	--> latency reduced by 33% compared to v2, only very minor increase in energy
 			--> v3 is 3 times faster than v1
+3 bidirectional interface busses
 use of KERNEL SRAM
 
 -----------Version 3.1----------
