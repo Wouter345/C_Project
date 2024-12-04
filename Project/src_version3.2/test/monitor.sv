@@ -26,7 +26,7 @@ class Monitor #(
       tract_output1.output_ch   = intf_i.cb.output_ch;
       mon2chk.put(tract_output1); // put output from bus 1
       
-      if (intf_i.cb.output_ch != 15) begin
+      if (intf_i.cb.output_ch != 15) begin // 6th writeback only send back 1 output
           tract_output2.output_data = intf_i.cb.from_bus_2;
           tract_output2.output_x    = intf_i.cb.output_x;
           tract_output2.output_y    = intf_i.cb.output_y;

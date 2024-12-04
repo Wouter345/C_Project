@@ -82,7 +82,7 @@ module controller_fsm #(
   logic last_x, last_y, last_KERNEL_COUNTER, last_ADDRESS_COUNTER, last_COMPUTE_COUNTER, last_READ_COUNTER, last_WRITE_COUNTER;
   logic interface_final_readwrite_cycle;
   logic first_calc;
-  logic succesful_read;
+  logic successful_read;
   logic last_overall;
   
   assign x_next = last_x ? 0 : x + {4'b0, conv_stride};

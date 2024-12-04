@@ -117,3 +117,19 @@ STRIDE=4:	AREA	= 331_300
 		EDP	= 20
 
 
+--------------------VERSION 3.2--------------------
+STRIDE=1:	AREA	= 331_487
+		LATENCY	= 196_766ns	= 0.196ms
+		ENERGY	= 33_632_444 
+		EDP	= 6_618
+		
+STRIDE=2:	AREA	= 331_487
+		LATENCY	= 49_310ns	= 0.049ms
+		ENERGY	= 8_413_737
+		EDP	= 415
+
+STRIDE=4:	AREA	= 331_487
+		LATENCY	= 12_446ns	= 0.012ms
+		ENERGY	= 2_109_049
+		EDP	= 26
+

@@ -108,6 +108,7 @@ module top_chip #(
   logic KERNEL_we_14a, KERNEL_we_14b;
   logic KERNEL_we_15a, KERNEL_we_15b;
   
+  // Define KERNEL_we multiplexer
   logic [4:0] mux_KERNEL_we_select;
   always_comb
   begin
@@ -245,7 +246,7 @@ module top_chip #(
   assign Next_Feature_8a_next = from_bus_3; assign Next_Feature_8b_next = from_bus_3;
 
   // Defines din for REGs Output_i
-  // == output of super adders
+  // = output of super adders
   
   // Define we for REGs Feature_i ;; is the same for all regs
   assign Feature_0a_we = Feature_we; assign Feature_0b_we = Feature_we;
@@ -258,7 +259,7 @@ module top_chip #(
   assign Feature_7a_we = Feature_we; assign Feature_7b_we = Feature_we;
   assign Feature_8a_we = Feature_we; assign Feature_8b_we = Feature_we;
 
-  // Define we for REGs Next_feature_i
+  // Define we multiplexer for REGs Next_feature_i
   logic [2:0] mux_next_feature_we_select;
   always_comb
   begin
@@ -317,7 +318,7 @@ module top_chip #(
   assign Output_14_we = Output_we;
   assign Output_15_we = Output_we;
   
-  // Define 18 to 1 mux for feature input a to macs
+  // Define 18 to 2 mux for feature input super_mac_aa and super_mac_ab to macs
   logic [IO_DATA_WIDTH-1:0] super_mac_aa;
   logic [IO_DATA_WIDTH-1:0] super_mac_ab;
   logic [4:0] mux9_select;
@@ -356,7 +357,7 @@ module top_chip #(
     endcase
   end
   
-  // Define 16 to 1 mux for selection of output to interface
+  // Define 16 to 3 mux for selection of output to interface
   logic signed [IO_DATA_WIDTH-1:0] output_data1, output_data2, output_data3;
   logic [2:0] mux_output_select;
   assign to_bus_1 = output_data1;
@@ -407,7 +408,7 @@ module top_chip #(
      logic product_valid;
      logic mac_accumulate_internal;
   
-    // Define super_mac := 16 mac units
+    // Define super_mac := 32 mac units
     super_mac #(
       .A_WIDTH(IO_DATA_WIDTH),
       .B_WIDTH(IO_DATA_WIDTH),
@@ -498,6 +499,7 @@ module top_chip #(
       .out15b(mac_out15b)
   );
   
+  //Define super_adders := 16 adders for combining of outputs from input channel 1 and 2.
   super_adders #(
   .A_WIDTH(IO_DATA_WIDTH),
   .OUT_WIDTH(IO_DATA_WIDTH)
@@ -559,7 +561,7 @@ module top_chip #(
     logic unsigned[$clog2(128)-1:0] KERNEL_write_addr;
     logic KERNEL_re;
     
-    // Define KERNEL_SRAM := 16 SRAM units
+    // Define KERNEL_SRAM := 32 SRAM units
     KERNEL_SRAM # (
         .WIDTH(IO_DATA_WIDTH),
         .HEIGHT(128),

@@ -1,5 +1,4 @@
 //wraps top_chip ; no external memory used
-//bandwidth to be counted is all bandwidth in and out of top_chip
 module top_system #(
     // these initial values are overwritten by tbench_top
     parameter int IO_DATA_WIDTH = 16,

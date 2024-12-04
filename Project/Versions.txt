@@ -23,3 +23,6 @@ use of KERNEL SRAM
 -----------Version 3.1----------
 same change as v2.1, reduces energy
 = sort of cheating
+
+-----------Version 3.2----------
+improved controller

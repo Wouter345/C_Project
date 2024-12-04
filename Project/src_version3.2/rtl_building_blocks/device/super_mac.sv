@@ -16,8 +16,8 @@ module super_mac #(
     input logic accumulate_internal, 
     
     // input a, this is the feature value, same for all mac units working in parallel
-    input logic signed [A_WIDTH-1:0] aa,
-    input logic signed [A_WIDTH-1:0] ab,
+    input logic signed [A_WIDTH-1:0] aa, // for input channel 1
+    input logic signed [A_WIDTH-1:0] ab, // for input channel 2
 
   // inputs b, these are the kernel coefficients for each output channel
     // for input channel a
